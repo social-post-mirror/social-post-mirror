@@ -1,18 +1,5 @@
 import { useState } from 'react';
 
-const categories = [
-  'Disinformation',
-  'Hate Speech',
-  'Harassment',
-  'Spam or Scams',
-  'Election Interference',
-  'Public Misinformation',
-  'Corporate Manipulation',
-  'Violence or Threats',
-  'Extremist Content',
-  'Other'
-];
-
 export default function Submit() {
   const [screenshot, setScreenshot] = useState(null);
   const [category, setCategory] = useState('');
@@ -28,7 +15,7 @@ export default function Submit() {
     e.preventDefault();
 
     if (!screenshot || !category) {
-      alert('Please select a screenshot and a category.');
+      alert('Please select a screenshot and a category before submitting.');
       return;
     }
 
@@ -39,7 +26,6 @@ export default function Submit() {
       const filename = file.name;
       const type = file.type;
 
-      // Step 1: Get a signed upload URL
       const res = await fetch('/api/upload-url', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -48,14 +34,12 @@ export default function Submit() {
 
       const { url } = await res.json();
 
-      // Step 2: Upload to S3
       await fetch(url, {
         method: 'PUT',
         headers: { 'Content-Type': type },
         body: file
       });
 
-      // Step 3: Record metadata (optional)
       const submitRes = await fetch('/api/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -65,10 +49,10 @@ export default function Submit() {
       if (submitRes.ok) {
         setSubmitted(true);
       } else {
-        alert('Upload failed.');
+        alert('Upload failed. Try again.');
       }
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
       alert('Something went wrong.');
     } finally {
       setUploading(false);
@@ -90,9 +74,16 @@ export default function Submit() {
         Select category:
         <select value={category} onChange={(e) => setCategory(e.target.value)} required>
           <option value="">--Choose a category--</option>
-          {categories.map((cat) => (
-            <option key={cat} value={cat}>{cat}</option>
-          ))}
+          <option value="Contradiction Exposed">Contradiction Exposed</option>
+          <option value="Hypocrisy Revealed">Hypocrisy Revealed</option>
+          <option value="Cultural Snapshot">Cultural Snapshot</option>
+          <option value="Unexpected Honesty">Unexpected Honesty</option>
+          <option value="Unintended Irony">Unintended Irony</option>
+          <option value="Public Accountability">Public Accountability</option>
+          <option value="Beautiful or Poetic">Beautiful or Poetic</option>
+          <option value="Too Absurd to Ignore">Too Absurd to Ignore</option>
+          <option value="Historically Relevant">Historically Relevant</option>
+          <option value="Deleted but Documented">Deleted but Documented</option>
         </select>
       </label>
       <br /><br />
