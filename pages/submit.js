@@ -60,19 +60,49 @@ export default function Submit() {
   };
 
   if (submitted) {
-    return <p>Thanks for your submission!</p>;
+    return (
+      <div className="max-w-xl mx-auto mt-20 text-center font-serif text-lg text-black">
+        <p>🪞 Thank you. Your post has been submitted to the mirror.</p>
+      </div>
+    );
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Screenshot:
-        <input type="file" accept="image/*" onChange={handleFileChange} required />
-      </label>
-      <br /><br />
-      <label>
-        Select category:
-        <select value={category} onChange={(e) => setCategory(e.target.value)} required>
+    <form
+      onSubmit={handleSubmit}
+      className="max-w-xl mx-auto mt-10 p-6 border border-black bg-white text-black font-serif space-y-6"
+    >
+      <div>
+        <label className="block mb-2 text-lg font-semibold uppercase">
+          Screenshot:
+        </label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          required
+          className="w-full border border-black p-2 bg-white"
+        />
+        <p className="mt-2 text-sm">
+          <a
+            href="/screenshot-help"
+            className="underline text-blue-700 hover:text-black"
+          >
+            How to take a screenshot
+          </a>
+        </p>
+      </div>
+
+      <div>
+        <label className="block mb-2 text-lg font-semibold uppercase">
+          Select Category:
+        </label>
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          required
+          className="w-full border border-black p-2 bg-white"
+        >
           <option value="">--Choose a category--</option>
           <option value="Contradiction Exposed">Contradiction Exposed</option>
           <option value="Hypocrisy Revealed">Hypocrisy Revealed</option>
@@ -85,11 +115,17 @@ export default function Submit() {
           <option value="Historically Relevant">Historically Relevant</option>
           <option value="Deleted but Documented">Deleted but Documented</option>
         </select>
-      </label>
-      <br /><br />
-      <button type="submit" disabled={uploading}>
-        {uploading ? 'Uploading...' : 'Submit'}
-      </button>
+      </div>
+
+      <div className="text-right">
+        <button
+          type="submit"
+          disabled={uploading}
+          className="border border-black bg-black text-white px-6 py-2 uppercase text-sm tracking-wide hover:bg-white hover:text-black transition"
+        >
+          {uploading ? 'Uploading...' : 'Submit'}
+        </button>
+      </div>
     </form>
   );
 }
